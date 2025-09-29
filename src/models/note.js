@@ -205,3 +205,4 @@ const notesSchema = new Schema({
     versionKey: false,
   },
 );
+export const Notes = Schema('notes', notesSchema);
