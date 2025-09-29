@@ -36,7 +36,7 @@ export const deleteNotes = async (req, res, next) => {
   res.status(200).send(notes);
 };
 
-export const patchNotes = async (req, res, next) => {
+export const updateNotes = async (req, res, next) => {
   const { notesId } = req.params;
   const notes = await Notes.findOneAndUpdate(
     { _id: notesId },
