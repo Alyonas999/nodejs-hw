@@ -1,5 +1,7 @@
-import { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
+
+export const Note = model('Note', notesSchema);
 const notesSchema = new Schema({
   "title": "Buy groceries",
   "content": "Milk, eggs, bread, coffee",
