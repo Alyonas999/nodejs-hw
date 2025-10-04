@@ -1,10 +1,9 @@
-import express from 'express';
+
 import dotenv from 'dotenv';
 import 'dotenv/config';
 import cors from 'cors';
-
+import express from 'express';
 import { connectMongoDB } from './db/connectMongoDB.js';
-import { Notes } from './models/note.js';
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -38,7 +37,7 @@ app.get('/test-error', () => {
   throw new Error('Simulated server error');
 });
 
-app.use(notesRoutes);
+app.use("/notes", notesRoutes);
 
 await connectMongoDB();
 
