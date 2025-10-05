@@ -1,6 +1,6 @@
 
-import dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config;';
+
 
 import express from 'express';
 import cors from 'cors';
@@ -15,24 +15,12 @@ import notesRoutes from './routes/notesRoutes.js';
 
 const app = express();
 
-app.use(logger);
-app.use(express.json({
-  limit: '100kb',
-}));
 app.use(cors());
+app.use(express.json({limit: '100kb',}));
+app.use(logger);
 
 
-app.get('/notes', (req, res) => {
-  return res.status(200).json({ message: "Retrieved all notes" });
-});
-
-app.get('/notes/:notesId', (req, res) => {
-  const { noteId } = req.params;
-  return res
-    .status(200)
-    .json({ message: `Retrieved note with ID: ${noteId}` });
-});
-
+app.use("/notes", notesRoutes);
 
 app.get('/test-error', () => {
   throw new Error('Simulated server error');
@@ -42,7 +30,6 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 
-app.use("/notes", notesRoutes);
 const startServer = async () => {
   await connectMongoDB();
   app.listen(process.env.PORT, () => {
