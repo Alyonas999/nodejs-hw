@@ -3,8 +3,8 @@ import { Schema, model } from 'mongoose';
 const noteSchema = new Schema(
   {
     title: { type: String, required: true, trim: true},
-    content: { type: String, required: true, default: ""  },
-    tag: { type: String, enum: [
+    content: { type: String, default: ""  },
+    tag: { type: String,trim: true, enum: [
         "Work",
         "Personal",
         "Meeting",
