@@ -11,13 +11,13 @@ import { celebrate } from 'celebrate';
 import {
   noteIdParamSchema,
   updateNoteSchema,
-  getNotesQuerySchema,
+  getAllNotesSchema,
   createNoteSchema,
 } from '../validations/notesValidation.js';
 
 const router = Router();
 
-router.get('/notes',celebrate(getNotesQuerySchema), getAllNotes);
+router.get('/notes',celebrate(getAllNotesSchema), getAllNotes);
 router.get('/notes/:noteId', celebrate(noteIdParamSchema), getNoteById);
 router.post('/notes', celebrate(createNoteSchema), createNote);
 router.delete('/notes/:noteId', celebrate(noteIdParamSchema) , deleteNote);

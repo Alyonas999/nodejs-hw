@@ -17,21 +17,16 @@ app.use(cors());
 app.use(express.json({limit: '100kb',}));
 app.use(logger);
 
-
-app.use("/notes", notesRoutes);
-
-app.get('/test-error', () => {
-  throw new Error('Simulated server error');
-});
-
+app.use("notes", notesRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
 
+const PORT = process.env.PORT || 3030;
 
 const startServer = async () => {
   await connectMongoDB();
-  app.listen(process.env.PORT, () => {
+  app.listen(PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
   });
 };
