@@ -1,6 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 import { isValidObjectId } from 'mongoose';
-import {TAGS} from '../constants/tags.js';
+import { TAGS } from '../constants/tags.js';
 
 const objectIdValidator = (value, helpers) => {
   const isValid = isValidObjectId(value);
@@ -27,7 +27,7 @@ export const noteIdParamSchema = {
 export const createNoteSchema = {
   [Segments.BODY]: Joi.object({
     title: Joi.string().max(100).min(1).required(),
-    content: Joi.string().max(1000).required(),
+    content: Joi.string().max(1000).allow(""),
     tag: Joi.string().valid(...TAGS).optional(),
   }),
 };
@@ -38,10 +38,8 @@ export const updateNoteSchema = {
     noteId: Joi.string().custom(objectIdValidator).required(),
   }),
   [Segments.BODY]: Joi.object({
-    title: Joi.string().max(100),
-    content: Joi.string().max(1000),
-    tag: Joi.string().valid(
-     TAGS
-    ),
+    title: Joi.string().max(100).min(1),
+    content: Joi.string().max(1000).allow(""),
+    tag: Joi.string().valid(...TAGS),
   }).min(1),
 };
