@@ -1,6 +1,6 @@
-
+import dotenv from "dotenv";
+dotenv.config();
 import express from 'express';
-import 'dotenv/config;';
 import cors from 'cors';
 import { errors } from "celebrate";
 import { connectMongoDB } from './db/connectMongoDB.js';
@@ -17,22 +17,17 @@ app.use(cors());
 app.use(express.json({limit: '100kb',}));
 app.use(logger);
 
-
-app.use("/notes", notesRoutes);
-
-app.get('/test-error', () => {
-  throw new Error('Simulated server error');
-});
-
+app.use(notesRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
 
+const PORT = process.env.PORT || 3030;
 
 const startServer = async () => {
   await connectMongoDB();
-  app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
   });
 };
 
