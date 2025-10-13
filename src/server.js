@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json({limit: '100kb',}));
 app.use(logger);
 
-app.use("notes", notesRoutes);
+app.use(notesRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 3030;
 const startServer = async () => {
   await connectMongoDB();
   app.listen(PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+    console.log(`Server is running on port ${PORT}`);
   });
 };
 
