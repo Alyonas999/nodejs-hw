@@ -8,12 +8,14 @@ import { Session } from "../models/session.js";
 /*registerUser*/
 export const registerUser = async (req, res, next) => {
   const { email, password } = req.body;
+
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     return next(createHttpError(400, "Email in use"));
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
+
   const newUser = await User.create({
     email,
     password: hashedPassword,
@@ -22,7 +24,9 @@ export const registerUser = async (req, res, next) => {
   const newSession = await createSession(newUser._id);
   setSessionCookies(res, newSession);
 
-  res.status(201).json({});
+  res.status(201).json({
+user: newUser.toJSON(),
+  });
 };
 
 /*loginUser*/
@@ -43,7 +47,9 @@ export const loginUser = async (req, res, next) => {
   setSessionCookies(res, newSession);
 
 
-  res.status(200).json({});
+  res.status(200).json({
+  user: user.toJSON(),
+  });
 };
 
 /*logoutUser*/
@@ -63,19 +69,19 @@ export const logoutUser = async (req, res) => {
 
 
 
-/*refreshUser*/
+/*refreshUserSession*/
 export const refreshUserSession = async (req, res, next) => {
-  const session = await Session.findByOne({
-    _id:req.cookies.sessionId,
+  const session = await Session.findOne({
+    _id: req.cookies.sessionId,
     refreshToken: req.cookies.refreshToken,
   });
 if (!session) {
     return next(createHttpError(401, 'Session not found'));
   }
 
-  const isSessionTokenExpired =
+  const isRefreshTokenExpired =
     new Date() > new Date(session.refreshTokenValidUntil);
-  if (isSessionTokenExpired) {
+  if (isRefreshTokenExpired) {
     return next(createHttpError(401, 'Session token expired'));
   }
 
