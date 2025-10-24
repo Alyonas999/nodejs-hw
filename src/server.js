@@ -22,7 +22,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(logger);
 
-app.use("/auth", authRoutes);
+app.use(authRoutes);
 app.use(notesRoutes);
 app.use(userRoutes);
 
