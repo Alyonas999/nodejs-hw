@@ -1,17 +1,14 @@
+import 'dotenv/config';
 
-import 'dotenv/config;';
+import express from "express";
+import cors from "cors";
 
+import { connectMongoDB } from "./db/connectMongoDB.js";
+import { logger } from "./middleware/logger.js";
+import { notFoundHandler } from "./middleware/notFoundHandler.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
-import express from 'express';
-import cors from 'cors';
-
-import { connectMongoDB } from './db/connectMongoDB.js';
-import { logger } from './middleware/logger.js';
-import { notFoundHandler } from './middleware/notFoundHandler.js';
-import { errorHandler } from './middleware/errorHandler.js';
-
-import notesRoutes from './routes/notesRoutes.js';
-
+import notesRoutes from "./routes/notesRoutes.js";
 
 const app = express();
 
@@ -19,16 +16,9 @@ app.use(cors());
 app.use(express.json({limit: '100kb',}));
 app.use(logger);
 
-
-app.use("/notes", notesRoutes);
-
-app.get('/test-error', () => {
-  throw new Error('Simulated server error');
-});
-
+app.use("/", notesRoutes);
 app.use(notFoundHandler);
 app.use(errorHandler);
-
 
 const startServer = async () => {
   await connectMongoDB();
@@ -38,4 +28,3 @@ const startServer = async () => {
 };
 
 startServer();
-
