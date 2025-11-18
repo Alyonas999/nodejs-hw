@@ -5,9 +5,16 @@ import {
   createNote,
   deleteNote,
   updateNote,
-}from '../controllers/notesController.js';
+} from '../controllers/notesController.js';
 
-const router = Router();
+import { celebrate } from 'celebrate';
+import {
+  noteIdSchema,
+  updateNoteSchema,
+  getAllNotesSchema,
+  createNoteSchema,
+} from '../validations/notesValidation.js';
+
 
 router.get("/notes", getAllNotes);
 router.get("/notes/:noteId", getNoteById);
@@ -15,6 +22,16 @@ router.post("/notes", createNote);
 router.delete("/notes/:noteId", deleteNote);
 router.patch("/notes/:noteId", updateNote);
 
+import { authenticate } from '../middleware/authenticate.js';
 
+
+const router = Router();
+router.use(authenticate);
+
+router.get('/notes', celebrate(getAllNotesSchema), getAllNotes);
+router.get('/notes/:noteId', celebrate(noteIdSchema), getNoteById);
+router.post('/notes', celebrate(createNoteSchema), createNote);
+router.delete('/notes/:noteId', celebrate(noteIdSchema) , deleteNote);
+router.patch('/notes/:noteId',celebrate(updateNoteSchema), updateNote);
 
 export default router;
